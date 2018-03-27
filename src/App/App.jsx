@@ -8,6 +8,8 @@ import { PrivateRoute } from '../Components/_components';
 import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
 import { RegisterPage } from '../RegisterPage';
+import { FirstPage } from '../FirstPage';
+import { AuthorizedComponent } from 'react-router-role-authorization';
 
 class App extends React.Component {
     constructor(props) {
@@ -33,6 +35,7 @@ class App extends React.Component {
                                 <PrivateRoute exact path="/" component={HomePage} />
                                 <Route path="/login" component={LoginPage} />
                                 <Route path="/register" component={RegisterPage} />
+                                <Route path="/firstPage" component={FirstPage} />
                             </div>
                         </Router>
                     </div>
