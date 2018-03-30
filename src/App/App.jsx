@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route } from 'react-router-dom';
+import { Router, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { history } from '../Components/_helpers';
@@ -9,7 +9,11 @@ import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
 import { RegisterPage } from '../RegisterPage';
 import { FirstPage } from '../FirstPage';
-import { AuthorizedComponent } from 'react-router-role-authorization';
+import { SecondPage } from '../SecondPage';
+// import { AuthorizedComponent } from 'react-router-role-authorization';
+import HasRole, { IsAdmin, IsUser } from '../HasRole';
+import { RequireRole } from '../RequiredRoleBase';
+import { ForbiddenPage } from '../ForbiddenPage';
 
 class App extends React.Component {
     constructor(props) {
@@ -22,7 +26,7 @@ class App extends React.Component {
     }
 
     render() {
-        const { alert } = this.props;
+        const { alert, isLoggedIn } = this.props;
         return (
             <div className="jumbotron">
                 <div className="container">
@@ -33,9 +37,15 @@ class App extends React.Component {
                         <Router history={history}>
                             <div className="text-center">
                                 <PrivateRoute exact path="/" component={HomePage} />
+                                <IsAdmin>
+                                    <PrivateRoute path="/firstPage" component={FirstPage} />
+                                </IsAdmin>
+                                <IsUser>
+                                    <PrivateRoute path="/firstPage" component={ForbiddenPage} />
+                                </IsUser>
+                                <PrivateRoute path="/secondPage" component={SecondPage} />
                                 <Route path="/login" component={LoginPage} />
                                 <Route path="/register" component={RegisterPage} />
-                                <Route path="/firstPage" component={FirstPage} />
                             </div>
                         </Router>
                     </div>
@@ -47,8 +57,11 @@ class App extends React.Component {
 
 function mapStateToProps(state) {
     const { alert } = state;
+    const auth = state.authentication;
+    const isLoggedIn = auth.loggedIn;
     return {
-        alert
+        alert,
+        isLoggedIn
     };
 }
 

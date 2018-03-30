@@ -5,7 +5,7 @@ export function configureMockBackend() {
     window.fetch = function (url, opts) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-
+                //for login
                 if (url.endsWith('/users/authenticate') && opts.method === 'POST') {
                     let params = JSON.parse(opts.body);
 
@@ -20,6 +20,7 @@ export function configureMockBackend() {
                             username: user.username,
                             firstName: user.firstName,
                             lastName: user.lastName,
+                            role: user.role,
                             token: 'mock-token'
                         };
                         resolve({ ok: true, json: () => responseJson });
@@ -55,6 +56,7 @@ export function configureMockBackend() {
                     return;
                 }
 
+                //for registration
                 if (url.endsWith('/users/register') && opts.method === 'POST') {
                     let newUser = JSON.parse(opts.body);
 
@@ -73,6 +75,7 @@ export function configureMockBackend() {
                     return;
                 }
 
+                //for deleting users
                 if (url.match(/\/users\/\d+$/) && opts.method === 'DELETE') {
                     if (opts.headers && opts.headers.Authorization === 'Bearermock-token') {
                         let urlParts = url.split('/');

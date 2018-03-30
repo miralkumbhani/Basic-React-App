@@ -13,7 +13,8 @@ class RegisterPage extends React.Component {
                 firstName: '',
                 lastName: '',
                 username: '',
-                password: ''
+                password: '',
+                role: ''
             },
             submitted: false
         };
@@ -39,7 +40,7 @@ class RegisterPage extends React.Component {
         this.setState({ submitted: true });
         const { user } = this.state;
         const { dispatch } = this.props;
-        if (user.firstName && user.lastName && user.username && user.password) {
+        if (user.firstName && user.lastName && user.username && user.password && user.role) {
             dispatch(userActions.register(user));
         }
     }
@@ -74,9 +75,16 @@ class RegisterPage extends React.Component {
                     </div>
                     <div className={'form-group' + (submitted && !user.password ? ' has-error' : '')}>
                         <label htmlFor="password" className="pull-left">Password</label>
-                        <input type="password" className="form-control" name="password" value={user.password} onChange={this.handleChange} />
+                        <input type="password" className="form-control" name="password" value={user.password} onChange={this.handleChange} autoComplete="off"/>
                         {submitted && !user.password &&
                             <div className="help-block">Password is required</div>
+                        }
+                    </div>
+                    <div className={'form-group' + (submitted && !user.role ? ' has-error' : '')}>
+                        <label htmlFor="role" className="pull-left">Role (admin/user)</label>
+                        <input type="role" className="form-control" name="role" value={user.role} onChange={this.handleChange} autoComplete="off"/>
+                        {submitted && !user.role &&
+                            <div className="help-block">Role is required</div>
                         }
                     </div>
                     <div className="form-group">

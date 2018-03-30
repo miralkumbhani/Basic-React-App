@@ -13,18 +13,22 @@ class HasRole extends React.Component {
 
     render() {
         const { children, currentUserRole, requiredRole } = this.props;
-        if (currentUserRole !== requiredRole) return null;
-        return ( <
-            div className = { className } > { children } <
-            /div>
+        if (currentUserRole !== requiredRole) {
+            return null;
+        }
+        return (
+            <div className={this.props.className}>
+                {children}
+            </div>
         );
     }
 }
 
 const getMapStateToProps = (extendWith = {}) => state => {
-    const ui = state.ui || {};
+    const auth = state.authentication || {};
+    const roleObj = auth.user;
     return {
-        currentUserRole: ui.self && ui.self.role ? ui.self.role : 'nobody',
+        currentUserRole: roleObj && roleObj.role ? roleObj.role : 'nobody',
         ...extendWith
     };
 };
