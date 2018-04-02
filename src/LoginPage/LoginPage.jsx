@@ -4,9 +4,12 @@ import { connect } from 'react-redux';
 
 import { userActions } from '../Components/_actions';
 
+import GoogleLogin from 'react-google-login';
+import FontAwesome from 'react-fontawesome';
+
 class LoginPage extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
 
         this.props.dispatch(userActions.logout());
 
@@ -20,6 +23,19 @@ class LoginPage extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    responseGoogle(googleUser) {
+        var id_token = googleUser.getAuthResponse().id_token;
+        var googleId = googleUser.getId();
+
+        console.log({ googleId });
+        console.log({ accessToken: id_token });
+        //anything else you want to do(save to localStorage)...
+    }
+
+    responseErrorGoogle(googleUser) {
+        console.log(googleUser);
+        //anything else you want to do(save to localStorage)...
+    }
     handleChange(e) {
         const { name, value } = e.target;
         this.setState({ [name]: value });
@@ -62,6 +78,23 @@ class LoginPage extends React.Component {
                         <Link to="/register" className="btn btn-link">Register</Link>
                     </div>
                 </form>
+
+                <div className="google-login">
+                    <GoogleLogin
+                    clientId="922376592488-qegatt3o5rjc5me632lou31eo8hd2b9k.apps.googleusercontent.com"
+                    hostedDomain="zymr.com"
+                    buttonText="Login"
+                    onSuccess={this.responseGoogle}
+                    onFailure={this.responseErrorGoogle}
+                >
+                    <FontAwesome
+                        name='google'
+                    />
+                    <span> Login with Google</span>
+                </GoogleLogin>
+                </div>
+
+
             </div>
         );
     }
