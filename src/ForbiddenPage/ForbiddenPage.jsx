@@ -10,8 +10,6 @@ class ForbiddenPage extends React.Component {
     }
 
     render() {
-        const { user, users } = this.props;
-
         return(
             <div className="col-md-8 col-md-offset-3 text-center">
                 <h1>Forbidden Page!!! </h1>
